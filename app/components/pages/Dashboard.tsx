@@ -9,7 +9,6 @@ const bestCase = scoredCases.reduce((a: any, b: any) => (b.score > a.score ? b :
 const worstCases = scoredCases.filter((c: any) => c.score <= 7.5).map((c: any) => c.company);
 
 const scoreProgression = scoredCases
-  .filter((c: any) => c.id <= 9)
   .sort((a: any, b: any) => a.id - b.id);
 
 export default function Dashboard() {

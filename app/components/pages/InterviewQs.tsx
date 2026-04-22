@@ -43,7 +43,7 @@ export default function InterviewQs() {
               <div style={{ padding: "0 16px 16px" }}>
                 <div className="feedback-box model">
                   <h4>Model Answer</h4>
-                  <p style={{ fontSize: 13, lineHeight: 1.6, color: "var(--text)", whiteSpace: "pre-wrap" }}>{q.a}</p>
+                  <p style={{ fontSize: 13, lineHeight: 1.6, color: "var(--text)", whiteSpace: "pre-wrap" }}>{q.myAnswer || q.a}</p>
                 </div>
               </div>
             )}

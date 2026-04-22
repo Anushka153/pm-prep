@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
 const NAV = [
@@ -35,6 +36,23 @@ interface Props {
 }
 
 export default function Sidebar({ activePage, onNavigate, isOpen, onClose }: Props) {
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme") as "dark" | "light" | null;
+    if (saved) {
+      setTheme(saved);
+      document.documentElement.setAttribute("data-theme", saved);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    localStorage.setItem("theme", next);
+    document.documentElement.setAttribute("data-theme", next);
+  };
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
   };
@@ -94,7 +112,17 @@ export default function Sidebar({ activePage, onNavigate, isOpen, onClose }: Pro
           })}
         </div>
 
-        <div style={{ padding: 12, borderTop: "1px solid var(--border)" }}>
+        <div style={{ padding: 12, borderTop: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 8 }}>
+          <button
+            onClick={toggleTheme}
+            style={{
+              width: "100%", background: "transparent", border: "1px solid var(--border)",
+              borderRadius: 8, padding: "8px 12px", color: "var(--text2)", fontSize: 12,
+              cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6
+            }}
+          >
+            {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
+          </button>
           <button
             onClick={handleSignOut}
             style={{

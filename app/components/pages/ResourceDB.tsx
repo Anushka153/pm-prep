@@ -1,4 +1,5 @@
 "use client";
+import PageNotes from "@/app/components/PageNotes";
 import { useState } from "react";
 import { dbLinks } from "@/data/dbLinks";
 
@@ -44,6 +45,7 @@ export default function ResourceDB() {
           </div>
         ))}
       </div>
+      <PageNotes pageKey="resourcedb" />
     </div>
   );
 }

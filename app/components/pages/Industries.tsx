@@ -1,4 +1,5 @@
 "use client";
+import PageNotes from "@/app/components/PageNotes";
 
 const INDUSTRIES = [
   { icon: "🚗", name: "Mobility / Ride-sharing", tag: "Uber, Lyft, Waymo, Ola", items: [["US rideshare market","~$50B/year"],["Uber global trips/day","~20M trips"],["Avg trip duration","~25 minutes"],["Rides/person/day (mid city)","~0.2"],["Platform take rate","25–30%"],["Key metric","GMV, take rate, driver utilization, ETA accuracy"]] },
@@ -78,6 +79,7 @@ export default function Industries() {
           </div>
         ))}
       </div>
+      <PageNotes pageKey="industries" />
     </div>
   );
 }

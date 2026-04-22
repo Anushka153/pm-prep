@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { decks } from "@/data/decks";
+import PageNotes from "@/app/components/PageNotes";
 
 const DECK_NAMES = Object.keys(decks);
 
@@ -83,6 +84,8 @@ export default function CardGames() {
         <button onClick={prev} disabled={index === 0} className="filter-btn" style={{ flex: 1, opacity: index === 0 ? 0.4 : 1 }}>← Prev</button>
         <button onClick={next} disabled={index === total - 1} className="filter-btn" style={{ flex: 1, opacity: index === total - 1 ? 0.4 : 1 }}>Next →</button>
       </div>
+
+      <PageNotes pageKey="cardgames" />
     </div>
   );
 }

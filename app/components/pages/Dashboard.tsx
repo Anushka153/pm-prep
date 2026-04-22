@@ -1,4 +1,5 @@
 "use client";
+import PageNotes from "@/app/components/PageNotes";
 import { cases } from "@/data/cases";
 
 const scoredCases = cases.filter((c: any) => c.score !== null && c.score !== undefined);
@@ -68,6 +69,7 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
+      <PageNotes pageKey="dashboard" />
     </div>
   );
 }

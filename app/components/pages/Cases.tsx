@@ -1,4 +1,5 @@
 "use client";
+import PageNotes from "@/app/components/PageNotes";
 import { useState } from "react";
 import { cases } from "@/data/cases";
 
@@ -124,6 +125,7 @@ export default function Cases() {
           );
         })}
       </div>
+      <PageNotes pageKey="cases" />
     </div>
   );
 }

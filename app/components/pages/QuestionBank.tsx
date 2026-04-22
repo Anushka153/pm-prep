@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
+import PageNotes from "@/app/components/PageNotes";
 
 interface Question {
   id: number;
@@ -179,6 +180,8 @@ export default function QuestionBank() {
           </div>
         )}
       </div>
+
+      <PageNotes pageKey="questionbank" />
     </div>
   );
 }

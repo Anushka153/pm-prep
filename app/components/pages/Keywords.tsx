@@ -1,4 +1,5 @@
 "use client";
+import PageNotes from "@/app/components/PageNotes";
 import { useState } from "react";
 import { kwData } from "@/data/kwData";
 
@@ -67,6 +68,7 @@ export default function Keywords() {
           </div>
         ))}
       </div>
+      <PageNotes pageKey="keywords" />
     </div>
   );
 }

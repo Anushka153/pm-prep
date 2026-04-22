@@ -1,4 +1,5 @@
 "use client";
+import PageNotes from "@/app/components/PageNotes";
 import { cases } from "@/data/cases";
 
 const STRENGTHS = [
@@ -92,6 +93,7 @@ export default function Patterns() {
           ))}
         </div>
       </div>
+      <PageNotes pageKey="patterns" />
     </div>
   );
 }

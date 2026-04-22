@@ -1,4 +1,5 @@
 "use client";
+import PageNotes from "@/app/components/PageNotes";
 import { useState } from "react";
 import { frameworks } from "@/data/frameworks";
 
@@ -58,6 +59,7 @@ export default function Frameworks() {
           </div>
         ))}
       </div>
+      <PageNotes pageKey="frameworks" />
     </div>
   );
 }

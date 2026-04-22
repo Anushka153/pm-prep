@@ -1,4 +1,5 @@
 "use client";
+import PageNotes from "@/app/components/PageNotes";
 import { useState } from "react";
 
 const MS_CASES = [
@@ -121,6 +122,7 @@ export default function MarketSizing() {
           </div>
         ))}
       </div>
+      <PageNotes pageKey="marketsizing" />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 "use client";
+import PageNotes from "@/app/components/PageNotes";
 import { useState } from "react";
 import { iqData } from "@/data/iqData";
 
@@ -50,6 +51,7 @@ export default function InterviewQs() {
           </div>
         ))}
       </div>
+      <PageNotes pageKey="interviewqs" />
     </div>
   );
 }

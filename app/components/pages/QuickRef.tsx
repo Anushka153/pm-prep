@@ -1,4 +1,5 @@
 "use client";
+import PageNotes from "@/app/components/PageNotes";
 
 const QR_CARDS = [
   {
@@ -86,6 +87,7 @@ export default function QuickRef() {
           </div>
         ))}
       </div>
+      <PageNotes pageKey="quickref" />
     </div>
   );
 }

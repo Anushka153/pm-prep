@@ -31,18 +31,24 @@ export default function Behavioral() {
     load();
   }, []);
 
-  const saveStoryNote = async (i: number, val: string) => {
-    setStoryNotes(prev => ({ ...prev, [i]: { ...prev[i], text: val } }));
+  const [draftNotes, setDraftNotes] = useState<Record<number, string>>({});
+  const [saving, setSaving] = useState<number | null>(null);
+
+  const saveStoryNote = async (i: number) => {
     if (!userId) return;
+    const val = draftNotes[i] ?? storyNotes[i]?.text ?? "";
+    setSaving(i);
     const existing = storyNotes[i];
     if (existing?.id) {
       await supabase.from("page_notes").update({ note_text: val, updated_at: new Date().toISOString() }).eq("id", existing.id);
+      setStoryNotes(prev => ({ ...prev, [i]: { ...existing, text: val } }));
     } else {
       const { data } = await supabase.from("page_notes").insert({
         user_id: userId, page_key: `behavioral-story-${i}`, note_text: val
       }).select("id").single();
       if (data) setStoryNotes(prev => ({ ...prev, [i]: { id: data.id, text: val } }));
     }
+    setSaving(null);
   };
 
   return (
@@ -75,8 +81,8 @@ export default function Behavioral() {
                 <div style={{ borderTop: "1px solid var(--border)", paddingTop: 14 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "var(--text2)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>📝 Story Notes</div>
                   <textarea
-                    value={storyNotes[i]?.text || ""}
-                    onChange={e => saveStoryNote(i, e.target.value)}
+                    value={draftNotes[i] ?? storyNotes[i]?.text ?? ""}
+                    onChange={e => setDraftNotes(prev => ({ ...prev, [i]: e.target.value }))}
                     placeholder="What to add, improve, or remember about this story..."
                     rows={3}
                     style={{
@@ -85,6 +91,19 @@ export default function Behavioral() {
                       resize: "vertical", outline: "none", fontFamily: "inherit", lineHeight: 1.5
                     }}
                   />
+                  <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 8 }}>
+                    <button
+                      onClick={() => saveStoryNote(i)}
+                      disabled={saving === i}
+                      style={{
+                        background: "var(--accent)", border: "none", borderRadius: 6,
+                        padding: "7px 18px", color: "white", fontSize: 12, fontWeight: 600,
+                        cursor: saving === i ? "not-allowed" : "pointer", opacity: saving === i ? 0.7 : 1
+                      }}
+                    >
+                      {saving === i ? "Saving..." : "Save Note"}
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

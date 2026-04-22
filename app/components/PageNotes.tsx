@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface Props {
   pageKey: string;
@@ -8,23 +9,47 @@ interface Props {
 
 export default function PageNotes({ pageKey, label = "Section Notes" }: Props) {
   const [text, setText] = useState("");
-  const [saved, setSaved] = useState(true);
+  const [status, setStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const [noteId, setNoteId] = useState<number | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const storageKey = `page-notes:${pageKey}`;
 
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey);
-    if (stored) setText(stored);
-  }, [storageKey]);
+    const load = async () => {
+      const { data: user } = await supabase.auth.getUser();
+      if (!user.user) return;
+      const { data } = await supabase
+        .from("page_notes")
+        .select("id, note_text")
+        .eq("page_key", pageKey)
+        .eq("user_id", user.user.id)
+        .single();
+      if (data) {
+        setText(data.note_text);
+        setNoteId(data.id);
+      }
+    };
+    load();
+  }, [pageKey]);
 
   const handleChange = (val: string) => {
     setText(val);
-    setSaved(false);
+    setStatus("saving");
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      localStorage.setItem(storageKey, val);
-      setSaved(true);
-    }, 800);
+    debounceRef.current = setTimeout(() => save(val), 800);
+  };
+
+  const save = async (val: string) => {
+    const { data: user } = await supabase.auth.getUser();
+    if (!user.user) return;
+    if (noteId) {
+      await supabase.from("page_notes").update({ note_text: val, updated_at: new Date().toISOString() }).eq("id", noteId);
+    } else {
+      const { data } = await supabase.from("page_notes").insert({
+        user_id: user.user.id, page_key: pageKey, note_text: val
+      }).select("id").single();
+      if (data) setNoteId(data.id);
+    }
+    setStatus("saved");
   };
 
   return (
@@ -33,8 +58,8 @@ export default function PageNotes({ pageKey, label = "Section Notes" }: Props) {
         <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--text2)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
           📝 {label}
         </h2>
-        <span style={{ fontSize: 11, color: saved ? "var(--green)" : "var(--text2)" }}>
-          {saved ? "Saved" : "Saving..."}
+        <span style={{ fontSize: 11, color: status === "saved" ? "var(--green)" : status === "saving" ? "var(--accent2)" : "transparent" }}>
+          {status === "saved" ? "Saved" : status === "saving" ? "Saving..." : "."}
         </span>
       </div>
       <textarea

@@ -1,7 +1,7 @@
 "use client";
 import PageNotes from "@/app/components/PageNotes";
-import { useState } from "react";
-import { cases } from "@/data/cases";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 const FILTERS = [
   { key: "all", label: "All" },
@@ -30,8 +30,15 @@ function getTagClass(type: string) {
 export default function Cases() {
   const [filter, setFilter] = useState("all");
   const [openId, setOpenId] = useState<number | null>(null);
+  const [cases, setCases] = useState<any[]>([]);
 
-  const filtered = (cases as any[]).filter((c) => {
+  useEffect(() => {
+    supabase.from("case_logs").select("*").order("id").then(({ data }) => {
+      if (data) setCases(data);
+    });
+  }, []);
+
+  const filtered = cases.filter((c) => {
     if (filter === "all") return true;
     if (filter === "amazon") return c.type.includes("amazon");
     if (filter === "design") return c.type.includes("design");

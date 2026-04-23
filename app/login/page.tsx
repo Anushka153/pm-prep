@@ -27,8 +27,8 @@ export default function LoginPage() {
         borderRadius: 16, padding: 40, width: "100%", maxWidth: 380
       }}>
         <div style={{ marginBottom: 28, textAlign: "center" }}>
-          <div style={{ fontSize: 28, marginBottom: 8 }}>📋</div>
-          <h1 style={{ fontSize: 20, fontWeight: 700, color: "var(--text)" }}>PM Prep</h1>
+          <div style={{ fontSize: 28, marginBottom: 8 }}>⚖️</div>
+          <h1 style={{ fontSize: 28, fontWeight: 400, color: "var(--text)", fontFamily: "var(--font-cursive)" }}>Case Closed</h1>
           <p style={{ color: "var(--text2)", fontSize: 13, marginTop: 4 }}>Sign in to access your prep dashboard</p>
         </div>
 
